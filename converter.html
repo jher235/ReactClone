@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+<body>
+    
+   <div id="root"></div>
+    
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src ="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> -->
+
+<script type = "text/babel">
+    const root = document.getElementById("root");
+    
+    function reRender(){
+        return(
+            ReactDOM.createRoot(root).render(<App />)
+            );
+
+    }
+    
+    function TimeConverter(){
+        const [amount, setAmount] = React.useState(0);
+        const [inverted, setInverted] = React.useState(false)
+        const crChange = (event)=>{
+            setAmount(event.target.value)
+        }
+        const reset= () =>{
+            setAmount(0)
+        }
+        const flip = ()=> {
+            setInverted((current) => !current);
+            reset()
+            }
+        
+        return(
+        <div> 
+            
+            <label htmlFor ="minutes">Minutes</label>
+            <input  
+            id = "minutes" 
+            placeholder = "Minutes" 
+            type = "number" 
+            onChange = {crChange}
+            disabled = {inverted === true}
+            value = {inverted ? amount*60 : amount}
+            />
+            
+            <label htmlFor = "hours">Hours</label>
+            <input 
+            id = "hours" 
+            placeholder = "hours" 
+            type = "number" 
+            value = { inverted ? amount : Math.round(amount/60)}
+            onChange ={crChange}
+            disabled = {inverted === false}
+            />
+
+            <button onClick = {reset} ><h3>Reset</h3></button>
+            <button onClick = {flip} ><h3>{inverted ? "M to H" : "H to M"}</h3></button>
+        </div>
+        );
+    }
+
+    function DistanceConverter(){
+        const [dt, setDt] = React.useState(0);
+        const [on, setOn] = React.useState(false);
+        const cvdt =(event) => {
+            setDt(event.target.value);
+        };
+        const mode =(event)=>{
+            setOn((current) => !current)
+            reset
+        }
+        const reset =()=>{
+            setDt(0)
+        }
+        return( 
+        <div>    
+            <h3>KM to M</h3>
+            <label htmlFor = "km">Kmeter</label>
+            <input id="km" type ="number" 
+            placeholder ="KM" onChange={cvdt}
+            value ={on===true ? dt*1.609 : dt} disabled = {on === true}
+            />
+
+            <label htmlFor = "mi">Mlies</label>
+            <input id ="mi"type ="number" 
+            placeholder ="Miles" value = {on === false ? dt/1.609 : dt}
+            onChange={cvdt} disabled = {on === false}
+            />
+            <button onClick={reset}><h3>Reset</h3></button>
+            <button onClick={mode}>{on === false ? "ML to KM" : "KM to ML"}</button>
+        </div>
+            );
+    }
+    // Miles -> km : amount * 1.609
+    // km -> Miles : amount / 1.609
+    function App(){
+        const [index, setIndex] = React.useState("x");
+        const onSelect= (event)=> {
+            setIndex(event.target.value);
+           
+        }; 
+        return(
+        <div>             
+            <h1>Super Converter</h1>
+            <select value ={index} onChange={onSelect}>
+                <option value = "x">Select your units</option>
+                <option value = "0">Time-Converter</option>
+                <option value = "1">Distance-Converter</option>
+            </select>
+           <hr />
+            {index === "x" ? "Please select your unit" : null}
+            {index === "0" ? <TimeConverter /> : null}
+            {index === "1" ? <DistanceConverter /> : null}
+            
+        </div>
+        );
+    }
+    //ReactDOM.render(<App />, root);
+    ReactDOM.createRoot(root).render(<App />);
+
+</script>
+</body>
+</html>
+
+<!-- https://unpkg.com/react@17.0.2/umd/react.production.min.js
+
+https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js
+
+
+https://reactjs.org/docs/add-react-to-a-website.html#tip-minify-javascript-for-production
+ -->
+
+
+
+   
