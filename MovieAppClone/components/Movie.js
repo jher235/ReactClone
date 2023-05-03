@@ -6,7 +6,7 @@ function Movie({id,mci,title,genres,summary,url}){
     <h2><Link to={`/movie/${id}`}>{title}</Link></h2>
     <ul>{genres!==null ? (genres.map((gr) => <li key={gr}>{gr}</li>)) : null}</ul>
     <p>{summary ? summary: "summery dosen't exist"}</p>
-    <p>{url!==null ? <a href ={`${url}`} target="_blank">Link</a> : null}</p>
+   {url &&  <p><a href ={`${url}`} target="_blank">Link</a> </p>}
         
     </div>);
 }
